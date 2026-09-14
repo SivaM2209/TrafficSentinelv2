@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#07111f">
+  <title>TrafficSentinel | Traffic Intelligence Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></div>
+        <div>
+          <h1>TrafficSentinel</h1>
+          <p>AI-Powered Multi-Camera Traffic Intelligence</p>
+        </div>
+      </div>
+      <div class="header-status">
+        <span class="live-dot"></span>
+        <span>DEMO MODE</span>
+        <span class="divider"></span>
+        <span id="clock">--:--:--</span>
+      </div>
+    </header>
+
+    <main class="dashboard">
+      <section class="stats-grid" aria-label="Traffic statistics">
+        <article class="stat-card">
+          <div class="stat-icon cyan">▦</div>
+          <div><span class="stat-label">Total Vehicles</span><strong id="totalVehicles">1,284</strong><small>Across monitored cameras</small></div>
+          <span class="trend up">↑ 12.4%</span>
+        </article>
+        <article class="stat-card">
+          <div class="stat-icon blue">◉</div>
+          <div><span class="stat-label">Active Cameras</span><strong id="activeCameras">01 / 01</strong><small>All systems online</small></div>
+          <span class="trend neutral">100% online</span>
+        </article>
+        <article class="stat-card">
+          <div class="stat-icon amber">≋</div>
+          <div><span class="stat-label">Traffic Density</span><strong id="trafficDensity">68%</strong><small>Current network load</small></div>
+          <span class="trend warn">Moderate</span>
+        </article>
+        <article class="stat-card">
+          <div class="stat-icon red">!</div>
+          <div><span class="stat-label">Active Alerts</span><strong id="activeAlerts">06</strong><small>Requires attention</small></div>
+          <span class="trend danger">3 critical</span>
+        </article>
+      </section>
+
+      <div class="content-grid">
+        <section class="panel cameras-panel">
+          <div class="panel-heading">
+            <div>
+              <span class="eyebrow">LIVE FEED</span>
+              <h2>Camera Monitoring</h2>
+            </div>
+            <button class="ghost-btn" id="refreshCameras">↻ Refresh</button>
+          </div>
+          <div class="camera-grid" id="cameraGrid">
+
+  <!-- CAMERA 01 -->
+  <div class="camera-card">
+
+    <div class="camera-header">
+      <strong>CAMERA 01</strong>
+      <span class="camera-status">OFFLINE</span>
+    </div>
+
+    <div class="video-container">
+      <video
+        id="trafficVideo1"
+        controls
+        muted
+        loop
+        playsinline
+      >
+        Your browser does not support HTML5 video.
+      </video>
+
+      <div class="video-status">
+        <span class="live-dot"></span>
+        AI DETECTION ACTIVE
+      </div>
+    </div>
+
+    <div class="camera-upload">
+      <input
+  type="file"
+  id="videoUpload1"
+  accept="video/*"
+  hidden
+>
+
+<button id="uploadButton1" type="button">
+  Upload Video
+</button>
+    </div>
+
+  </div>
+
+
+  <!-- CAMERA 02 -->
+  <div class="camera-card">
+
+    <div class="camera-header">
+      <strong>CAMERA 02</strong>
+      <span class="camera-status">OFFLINE</span>
+    </div>
+
+    <div class="video-container">
+      <video
+        id="trafficVideo2"
+        controls
+        muted
+        loop
+        playsinline
+      >
+        Your browser does not support HTML5 video.
+      </video>
+
+      <div class="video-status">
+        <span class="live-dot"></span>
+        AI DETECTION ACTIVE
+      </div>
+    </div>
+
+    <div class="camera-upload">
+      <input
+  type="file"
+  id="videoUpload2"
+  accept="video/*"
+  hidden
+>
+
+<button id="uploadButton2" type="button">
+  Upload Video
+</button>
+    </div>
+
+  </div>
+
+
+  <!-- CAMERA 03 -->
+  <div class="camera-card">
+
+    <div class="camera-header">
+      <strong>CAMERA 03</strong>
+      <span class="camera-status">OFFLINE</span>
+    </div>
+
+    <div class="video-container">
+      <video
+        id="trafficVideo3"
+        controls
+        muted
+        loop
+        playsinline
+      >
+        Your browser does not support HTML5 video.
+      </video>
+
+      <div class="video-status">
+        <span class="live-dot"></span>
+        AI DETECTION ACTIVE
+      </div>
+    </div>
+
+    <div class="camera-upload">
+      <input
+  type="file"
+  id="videoUpload3"
+  accept="video/*"
+  hidden
+>
+
+<button id="uploadButton3" type="button">
+  Upload Video
+</button>
+    </div>
+
+  </div>
+
+</div>
+        </section>
+
+        <section class="panel map-panel">
+          <div class="panel-heading">
+            <div>
+              <span class="eyebrow">CITY OVERVIEW</span>
+              <h2>Traffic Intelligence Map</h2>
+            </div>
+            <span class="map-badge">CITY MAP PLACEHOLDER</span>
+          </div>
+          <div class="map-stage" aria-label="Map placeholder">
+            <div class="map-grid-lines"></div>
+            <div class="road road-a"></div><div class="road road-b"></div><div class="road road-c"></div>
+            <div class="road road-d"></div><div class="road road-e"></div><div class="road road-f"></div>
+            <div class="water"></div>
+            <div class="map-label label-1">CENTRAL AVE</div>
+            <div class="map-label label-2">NORTH JUNCTION</div>
+            <div class="map-label label-3">RING ROAD</div>
+            <div class="map-pin pin-1"><span></span><b>01</b></div>
+            <div class="map-pin pin-2"><span></span><b>02</b></div>
+            <div class="map-pin pin-3 warning"><span></span><b>03</b></div>
+            <div class="map-pin pin-4"><span></span><b>04</b></div>
+            <div class="map-pin pin-5 danger"><span></span><b>05</b></div>
+            <div class="map-center"><div class="crosshair"></div><span>LIVE TRAFFIC NETWORK</span></div>
+            <div class="map-legend">
+              <span><i class="dot low"></i>Low</span>
+              <span><i class="dot medium"></i>Moderate</span>
+              <span><i class="dot high"></i>High</span>
+            </div>
+            <div class="map-future">Leaflet + OpenStreetMap integration point</div>
+          </div>
+        </section>
+      </div>
+
+      <div class="lower-grid">
+        <section class="panel search-panel">
+          <div class="panel-heading">
+            <div>
+              <span class="eyebrow">VEHICLE TRACE</span>
+              <h2>Search Vehicle Journey</h2>
+            </div>
+          </div>
+          <form class="search-form" id="vehicleSearchForm">
+            <label for="vehicleId">Vehicle ID Number</label>
+            <div class="input-row">
+              <input id="vehicleId" type="text" placeholder="e.g. TS-4821" autocomplete="off">
+              <button type="submit">Search Journey</button>
+            </div>
+          </form>
+          <div class="journey-result" id="journeyResult">
+            <div class="empty-state">
+              <div class="search-icon">⌕</div>
+              <strong>Enter a vehicle ID to trace its journey</strong>
+              <span>Demo vehicle IDs: V-1042, V-2087 and V-3156.</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel alerts-panel">
+          <div class="panel-heading">
+            <div>
+              <span class="eyebrow">INCIDENTS</span>
+              <h2>Active Alerts</h2>
+            </div>
+            <span class="count-badge" id="alertCount">06</span>
+          </div>
+          <div class="alert-list" id="alertList"></div>
+        </section>
+      </div>
+
+      <section class="panel activity-panel">
+        <div class="panel-heading">
+          <div>
+            <span class="eyebrow">EVENT STREAM</span>
+            <h2>Recent Vehicle Activity</h2>
+          </div>
+          <div class="table-actions">
+            <span class="updated">Last updated <b id="lastUpdated">just now</b></span>
+            <button class="ghost-btn" id="refreshActivity">↻ Refresh</button>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>ID Number</th><th>Camera</th><th>Timestamp</th><th>Vehicle Type</th><th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="activityBody"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <span>TrafficSentinel • SIH 2026 Prototype</span>
+      <span><b>FRONTEND ONLY</b> • Demo data is simulated</span>
+    </footer>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
