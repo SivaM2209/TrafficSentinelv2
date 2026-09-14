@@ -1,21 +1,18 @@
 from pathlib import Path
 import shutil
-import subprocess
 
 from fastapi import FastAPI, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
-from fastapi.staticfiles import StaticFiles
 
 from database.database import create_tables
 from api.routes.vehicles import router as vehicles_router
 from services.uploaded_video_processor import process_uploaded_video
 
-
 app = FastAPI(
-    title="TrafficSentinel API",
-    description="Backend API for TrafficSentinel",
-    version="1.0.0"
+    title="NexTra API",
+    description="NexTra AI-powered traffic intelligence backend",
+    version="2.0.0",
 )
 
 app.add_middleware(
@@ -29,208 +26,104 @@ app.add_middleware(
 create_tables()
 app.include_router(vehicles_router)
 
-
-# =========================
-# PROJECT PATHS
-# =========================
-
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
-
 FRONTEND_PATH = PROJECT_ROOT / "frontend"
-
-VIDEO_PATH = (
-    PROJECT_ROOT
-    / "data"
-    / "processed_videos"
-    / "traffic_detected_web.mp4"
-)
 UPLOAD_PATH = PROJECT_ROOT / "data" / "uploads"
+PROCESSED_PATH = PROJECT_ROOT / "data" / "processed_videos"
+UPLOAD_PATH.mkdir(parents=True, exist_ok=True)
+PROCESSED_PATH.mkdir(parents=True, exist_ok=True)
 
-UPLOAD_PATH.mkdir(
-    parents=True,
-    exist_ok=True
-)
-
-
-# =========================
-# FRONTEND
-# =========================
 
 @app.get("/")
 def serve_frontend():
-    return FileResponse(
-        FRONTEND_PATH / "index.html"
-    )
+    return FileResponse(FRONTEND_PATH / "index.html")
 
 
 @app.get("/style.css")
 def serve_css():
-    return FileResponse(
-        FRONTEND_PATH / "style.css",
-        media_type="text/css"
-    )
+    return FileResponse(FRONTEND_PATH / "style.css", media_type="text/css")
 
 
 @app.get("/script.js")
 def serve_js():
-    return FileResponse(
-        FRONTEND_PATH / "script.js",
-        media_type="application/javascript"
-    )
+    return FileResponse(FRONTEND_PATH / "script.js", media_type="application/javascript")
 
 
-# =========================
-# API
-# =========================
+@app.get("/logo.svg")
+def serve_logo():
+    return FileResponse(FRONTEND_PATH / "logo.svg", media_type="image/svg+xml")
+
 
 @app.get("/api-status")
 def api_status():
-    return {
-        "message": "TrafficSentinel API is running"
-    }
+    return {"message": "NexTra API is running", "status": "online"}
 
-
-# =========================
-# PROCESSED VIDEO
-# =========================
-
-@app.get("/video")
-def get_processed_video():
-
-    if not VIDEO_PATH.exists():
-        return {
-            "error": "Processed video not found",
-            "path": str(VIDEO_PATH)
-        }
-
-    return FileResponse(
-        path=VIDEO_PATH,
-        media_type="video/mp4",
-        headers={
-            "Content-Disposition": "inline"
-        }
-    )
-# =========================
-# VIDEO UPLOAD
-# =========================
 
 @app.post("/upload-video/{camera_id}")
-async def upload_video(
-    camera_id: int,
-    file: UploadFile = File(...)
-):
-
+async def upload_video(camera_id: int, file: UploadFile = File(...)):
     if camera_id not in [1, 2, 3]:
-        return {
-            "error": "Invalid camera ID. Use 1, 2, or 3."
-        }
-
+        return {"error": "Invalid camera ID. Use 1, 2, or 3."}
     if not file.filename:
-        return {
-            "error": "No file selected."
-        }
+        return {"error": "No file selected."}
 
     camera_folder = UPLOAD_PATH / f"camera_{camera_id}"
-
-    camera_folder.mkdir(
-        parents=True,
-        exist_ok=True
-    )
-
-    # Original uploaded video
+    camera_folder.mkdir(parents=True, exist_ok=True)
     original_path = camera_folder / file.filename
 
     with original_path.open("wb") as buffer:
-        shutil.copyfileobj(
-            file.file,
-            buffer
-        )
-
-    try:
-
-        print()
-        print(
-            f"Starting processing for Camera {camera_id}..."
-        )
-
-        processed_video = process_uploaded_video(
-            camera_id,
-            original_path
-        )
-
-        print(
-            f"Camera {camera_id} processing completed."
-        )
-
-    except Exception as error:
-
-        print(
-            "Video processing failed:",
-            error
-        )
-
-        return {
-            "error": f"Video processing failed: {str(error)}"
-        }
+        shutil.copyfileobj(file.file, buffer)
 
     return {
-        "message": "Video uploaded and processed successfully",
+        "message": "Video uploaded successfully",
         "camera_id": camera_id,
         "filename": file.filename,
-        "video_url": f"/processed-video/{camera_id}"
     }
-# =========================
-# UPLOADED VIDEO
-# =========================
 
-@app.get("/uploaded-video/{camera_id}")
-def get_uploaded_video(camera_id: int):
+
+@app.post("/analyze-video/{camera_id}")
+def analyze_video(camera_id: int):
+    if camera_id not in [1, 2, 3]:
+        return {"error": "Invalid camera ID. Use 1, 2, or 3."}
 
     camera_folder = UPLOAD_PATH / f"camera_{camera_id}"
+    if not camera_folder.exists():
+        return {"error": "No video uploaded for this camera."}
 
-    video_path = camera_folder / "video_web.mp4"
+    videos = [p for p in camera_folder.iterdir() if p.is_file()]
+    if not videos:
+        return {"error": "No uploaded video found for this camera."}
 
-    if not video_path.exists():
-        return {
-            "error": "No converted video found for this camera."
-        }
+    input_path = max(videos, key=lambda p: p.stat().st_mtime)
 
-    return FileResponse(
-        path=video_path,
-        media_type="video/mp4",
-        headers={
-            "Content-Disposition": "inline"
-        }
-    )
-# =========================
-# PROCESSED UPLOADED VIDEO
-# =========================
+    try:
+        processed_output, summary = process_uploaded_video(camera_id, input_path)
+    except Exception as error:
+        return {"error": f"Video processing failed: {str(error)}"}
+
+    return {
+        "message": "Video analyzed successfully",
+        "camera_id": camera_id,
+        "video_url": f"/processed-video/{camera_id}",
+        "summary": summary,
+    }
+
 
 @app.get("/processed-video/{camera_id}")
-def get_processed_uploaded_video(camera_id: int):
-
+def get_processed_video(camera_id: int):
     if camera_id not in [1, 2, 3]:
-        return {
-            "error": "Invalid camera ID."
-        }
-
-    video_path = (
-        PROJECT_ROOT
-        / "data"
-        / "processed_videos"
-        / f"camera_{camera_id}"
-        / "processed_video.mp4"
-    )
-
+        return {"error": "Invalid camera ID."}
+    video_path = PROCESSED_PATH / f"camera_{camera_id}" / "processed_video.mp4"
     if not video_path.exists():
-        return {
-            "error": "Processed video not found."
-        }
+        return {"error": "Processed video not found."}
+    return FileResponse(video_path, media_type="video/mp4", headers={"Content-Disposition": "inline"})
 
-    return FileResponse(
-        path=video_path,
-        media_type="video/mp4",
-        headers={
-            "Content-Disposition": "inline"
-        }
-    )
+
+@app.get("/analysis-summary/{camera_id}")
+def get_analysis_summary(camera_id: int):
+    if camera_id not in [1, 2, 3]:
+        return {"error": "Invalid camera ID."}
+    summary_path = PROCESSED_PATH / f"camera_{camera_id}" / "analysis_summary.json"
+    if not summary_path.exists():
+        return {"error": "No analysis summary found for this camera."}
+    import json
+    return json.loads(summary_path.read_text(encoding="utf-8"))
