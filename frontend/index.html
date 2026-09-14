@@ -3,82 +3,48 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#f7f9fc">
   <title>NexTra | Traffic Management</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=8">
+  <link rel="stylesheet" href="style.css?v=10">
 </head>
 <body>
-  <main class="main" id="dashboard">
-    <header class="topbar">
-      <div class="top-brand">
-        <img src="logo.svg" class="top-logo" alt="NexTra Traffic Management">
-      </div>
-      <div class="top-meta">
-        <span id="dateTime">--</span>
-        <span class="online"><i></i> SYSTEM ONLINE</span>
-      </div>
-    </header>
+<main class="main" id="dashboard">
+  <header class="topbar">
+    <div class="top-brand"><img src="logo.svg" class="top-logo" alt="NexTra Traffic Management"></div>
+    <div class="top-meta"><span id="dateTime">--</span><span class="online"><i></i>SYSTEM ONLINE</span></div>
+  </header>
 
-    <section class="stats-grid" aria-label="Traffic summary">
-      <article class="stat-card"><span class="kpi-icon blue">▥</span><div><span>Total Vehicles</span><strong id="totalVehicles">0</strong><small>Unique tracked vehicles</small></div></article>
-      <article class="stat-card"><span class="kpi-icon purple">◉</span><div><span>Analyzed Cameras</span><strong id="activeCameras">0 / 3</strong><small>Current analysis session</small></div></article>
-      <article class="stat-card"><span class="kpi-icon green">≋</span><div><span>Traffic Density</span><strong id="trafficDensity">—</strong><small id="densitySub">Analyze a video to calculate</small></div></article>
-      <article class="stat-card"><span class="kpi-icon amber">!</span><div><span>Active Alerts</span><strong id="activeAlerts">0</strong><small>Rule-based prototype alerts</small></div></article>
-    </section>
+  <section class="stats-grid">
+    <article class="stat-card"><span class="kpi-icon blue">▥</span><div><span>Total Vehicles</span><strong id="totalVehicles">0</strong><small>Unique tracked vehicles</small></div></article>
+    <article class="stat-card"><span class="kpi-icon purple">◉</span><div><span>Analyzed Cameras</span><strong id="activeCameras">0 / 3</strong><small>Current analysis session</small></div></article>
+    <article class="stat-card"><span class="kpi-icon green">≋</span><div><span>Traffic Density</span><strong id="trafficDensity">—</strong><small id="densitySub">Analyze a video to calculate</small></div></article>
+    <article class="stat-card"><span class="kpi-icon amber">!</span><div><span>Active Alerts</span><strong id="activeAlerts">0</strong><small>Rule-based prototype alerts</small></div></article>
+  </section>
 
-    <section class="panel cameras" id="cameras">
-      <div class="panel-head"><div><small class="eyebrow">MONITORING</small><h2>Camera Feeds</h2></div><button class="btn" id="refreshCameras">Refresh</button></div>
-      <div class="camera-grid">
-        <article class="camera-card">
-          <div class="camera-title"><div><strong>Camera 01</strong><span>Primary junction</span></div><span class="state" id="state1">READY</span></div>
-          <div class="video-wrap"><video id="trafficVideo1" controls muted playsinline></video><div class="video-placeholder" id="placeholder1"><div class="cam-symbol">+</div><b>Select a road video</b><span>YOLO + ByteTrack</span></div><div class="ai-pill" id="ai1">AI READY</div></div>
-          <div class="camera-actions"><input type="file" id="videoUpload1" accept="video/*" hidden><button class="btn secondary" id="uploadButton1">Choose Video</button><button class="btn primary" id="analyzeButton1" disabled>Analyze</button></div>
-        </article>
-        <article class="camera-card">
-          <div class="camera-title"><div><strong>Camera 02</strong><span>North approach</span></div><span class="state" id="state2">READY</span></div>
-          <div class="video-wrap"><video id="trafficVideo2" controls muted playsinline></video><div class="video-placeholder" id="placeholder2"><div class="cam-symbol">+</div><b>Select a road video</b><span>YOLO + ByteTrack</span></div><div class="ai-pill" id="ai2">AI READY</div></div>
-          <div class="camera-actions"><input type="file" id="videoUpload2" accept="video/*" hidden><button class="btn secondary" id="uploadButton2">Choose Video</button><button class="btn primary" id="analyzeButton2" disabled>Analyze</button></div>
-        </article>
-        <article class="camera-card">
-          <div class="camera-title"><div><strong>Camera 03</strong><span>Ring road</span></div><span class="state" id="state3">READY</span></div>
-          <div class="video-wrap"><video id="trafficVideo3" controls muted playsinline></video><div class="video-placeholder" id="placeholder3"><div class="cam-symbol">+</div><b>Select a road video</b><span>YOLO + ByteTrack</span></div><div class="ai-pill" id="ai3">AI READY</div></div>
-          <div class="camera-actions"><input type="file" id="videoUpload3" accept="video/*" hidden><button class="btn secondary" id="uploadButton3">Choose Video</button><button class="btn primary" id="analyzeButton3" disabled>Analyze</button></div>
-        </article>
-      </div>
-    </section>
+  <section class="panel cameras" id="cameras">
+    <div class="panel-head"><div><small class="eyebrow">MONITORING</small><h2>Camera Feeds</h2></div><button class="btn" id="refreshCameras">Refresh</button></div>
+    <div class="camera-grid">
+      <article class="camera-card"><div class="camera-title"><div><strong>Camera 01</strong><span>Primary junction</span></div><span class="state" id="state1">READY</span></div><div class="video-wrap"><video id="trafficVideo1" controls muted playsinline></video><div class="video-placeholder" id="placeholder1"><div class="cam-symbol">+</div><b>Select a road video</b><span>YOLO + ByteTrack</span></div><div class="ai-pill" id="ai1">AI READY</div></div><div class="camera-actions"><input type="file" id="videoUpload1" accept="video/*" hidden><button class="btn secondary" id="uploadButton1">Choose Video</button><button class="btn primary" id="analyzeButton1" disabled>Analyze</button></div></article>
+      <article class="camera-card"><div class="camera-title"><div><strong>Camera 02</strong><span>North approach</span></div><span class="state" id="state2">READY</span></div><div class="video-wrap"><video id="trafficVideo2" controls muted playsinline></video><div class="video-placeholder" id="placeholder2"><div class="cam-symbol">+</div><b>Select a road video</b><span>YOLO + ByteTrack</span></div><div class="ai-pill" id="ai2">AI READY</div></div><div class="camera-actions"><input type="file" id="videoUpload2" accept="video/*" hidden><button class="btn secondary" id="uploadButton2">Choose Video</button><button class="btn primary" id="analyzeButton2" disabled>Analyze</button></div></article>
+      <article class="camera-card"><div class="camera-title"><div><strong>Camera 03</strong><span>Ring road</span></div><span class="state" id="state3">READY</span></div><div class="video-wrap"><video id="trafficVideo3" controls muted playsinline></video><div class="video-placeholder" id="placeholder3"><div class="cam-symbol">+</div><b>Select a road video</b><span>YOLO + ByteTrack</span></div><div class="ai-pill" id="ai3">AI READY</div></div><div class="camera-actions"><input type="file" id="videoUpload3" accept="video/*" hidden><button class="btn secondary" id="uploadButton3">Choose Video</button><button class="btn primary" id="analyzeButton3" disabled>Analyze</button></div></article>
+    </div>
+  </section>
 
-    <section class="analytics-grid">
-      <section class="panel">
-        <div class="panel-head"><div><small class="eyebrow">DISTRIBUTION</small><h2>Vehicle Types</h2></div></div>
-        <div class="donut-row"><div class="donut" id="typeDonut"><div><strong id="donutTotal">0</strong><span>vehicles</span></div></div><div class="legend" id="typeLegend"></div></div>
-      </section>
-      <section class="panel">
-        <div class="panel-head"><div><small class="eyebrow">FLOW</small><h2>Traffic Flow</h2></div></div>
-        <canvas id="flowChart" height="160"></canvas>
-      </section>
-    </section>
+  <section class="analytics-grid">
+    <section class="panel"><div class="panel-head"><div><small class="eyebrow">DISTRIBUTION</small><h2>Vehicle Types</h2></div></div><div class="donut-row"><div class="donut" id="typeDonut"><div><strong id="donutTotal">0</strong><span>vehicles</span></div></div><div class="legend" id="typeLegend"></div></div></section>
+    <section class="panel"><div class="panel-head"><div><small class="eyebrow">FLOW</small><h2>Traffic Flow</h2></div></div><div class="flow-empty" id="flowEmpty">Analyze a video to show frame-by-frame vehicle flow.</div><canvas id="flowChart" height="150" hidden></canvas></section>
+  </section>
 
-    <section class="panel alerts-panel" id="alerts">
-      <div class="panel-head"><div><small class="eyebrow">INCIDENT RESPONSE</small><h2>Active Alerts</h2></div><span class="alert-badge" id="alertBadge">0</span></div>
-      <div class="alert-list" id="alertList"><div class="alert-empty"><div class="alert-icon">✓</div><div><b>No active alerts</b><span>Alerts will appear here when rule checks are triggered.</span></div></div></div>
-    </section>
+  <section class="panel alerts-panel" id="alerts"><div class="panel-head"><div><small class="eyebrow">INCIDENT RESPONSE</small><h2>Active Alerts</h2></div><span class="alert-badge" id="alertBadge">0</span></div><div class="alert-list" id="alertList"><div class="alert-empty"><div class="alert-icon">✓</div><div><b>No active alerts</b><span>Alerts will appear here when rule checks are triggered.</span></div></div></div></section>
 
-    <section class="panel vehicles-panel" id="vehicles">
-      <div class="panel-head"><div><small class="eyebrow">TRACKING DATA</small><h2>Detected Vehicles</h2></div><div class="vehicle-tools"><input id="vehicleSearch" placeholder="Search Vehicle ID..." autocomplete="off"><select id="typeFilter"><option value="">All Types</option><option value="car">Car</option><option value="motorcycle">Motorcycle</option><option value="bus">Bus</option><option value="truck">Truck</option></select></div></div>
-      <div class="vehicle-list" id="vehicleList"><div class="empty-list">Analyze a video to populate tracked vehicles.</div></div>
-    </section>
+  <section class="panel vehicles-panel" id="vehicles"><div class="panel-head"><div><small class="eyebrow">TRACKING DATA</small><h2>Detected Vehicles</h2></div><div class="vehicle-tools"><input id="vehicleSearch" placeholder="Search Vehicle ID..." autocomplete="off"><select id="typeFilter"><option value="">All Types</option><option value="car">Car</option><option value="motorcycle">Motorcycle</option><option value="bus">Bus</option><option value="truck">Truck</option></select></div></div><div class="vehicle-list" id="vehicleList"><div class="empty-list">Analyze a video to populate tracked vehicles.</div></div></section>
 
-    <section class="panel search-panel" id="search">
-      <div class="panel-head"><div><small class="eyebrow">JOURNEY TRACE</small><h2>Search Vehicle Journey</h2></div></div>
-      <form class="search-form" id="vehicleSearchForm"><input id="vehicleId" type="text" placeholder="Enter vehicle ID e.g. C01-V-0001"><button class="btn primary" type="submit">Search Journey</button></form>
-      <div id="journeyResult" class="journey-result"><span>Search results will appear here.</span></div>
-    </section>
+  <section class="panel search-panel" id="search"><div class="panel-head"><div><small class="eyebrow">JOURNEY TRACE</small><h2>Search Vehicle Journey</h2></div></div><form class="search-form" id="vehicleSearchForm"><input id="vehicleId" type="text" placeholder="Enter vehicle ID e.g. C01-V-0001"><button class="btn primary" type="submit">Search Journey</button></form><div id="journeyResult" class="journey-result"><span>Search results will appear here.</span></div></section>
 
-    <footer>NexTra • SIH 2026 Prototype <span>AI-assisted traffic monitoring • Prototype metrics only</span></footer>
-  </main>
-  <script src="script.js?v=8"></script>
+  <footer>NexTra • SIH 2026 Prototype <span>AI-assisted traffic monitoring • Prototype metrics only</span></footer>
+</main>
+<script src="script.js?v=10"></script>
 </body>
 </html>
